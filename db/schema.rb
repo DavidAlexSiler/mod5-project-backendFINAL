@@ -16,7 +16,15 @@ ActiveRecord::Schema.define(version: 2019_10_10_172645) do
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
+    t.string "name"
+    t.string "image"
+    t.string "country"
+    t.string "spotify_url"
+    t.string "href"
+    t.string "uri"
+    t.string "spotify_id"
+    t.string "access_token"
+    t.string "refresh_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

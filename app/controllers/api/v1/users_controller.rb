@@ -1,3 +1,5 @@
+require 'rest_client'
+
 class Api::V1::UsersController < ApplicationController
     def spotify
         spotify_user = RSpotify::User.new(request.env['omniauth.auth'])
@@ -47,22 +49,23 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def create
-        # Request refresh and access tokens
-        
+        # Request refresh and access tokens checked
         body = {
-        grant_type: "authorization_code",
-        code: params[:code]],
-        redirect_uri: 'http://localhost:3000/api/v1/user',
-        client_id: Rails.application.credentials[:spotify][:client_id],
-        client_secret: Rails.application.credentials[:spotify][:client_secret]
+            grant_type: "authorization_code",
+            code: params[:code],
+            redirect_uri: 'http://localhost:8888/callback',
+            client_id: Rails.application.credentials[:spotify][:client_id],
+            client_secret: Rails.application.credentials[:spotify][:client_secret]
         }
+
+        # GET ACCESS TOKEN
 
         auth_response = RestClient.post('https://accounts.spotify.com/api/token', body)
         auth_params = JSON.parse(auth_response.body)
         header = {
-        Authorization: "Bearer #{auth_params["access_token"]}"
+            Authorization: "Bearer #{auth_params["access_token"]}"
         }
-
+        
         user_response = RestClient.get("https://api.spotify.com/v1/me", header)
         user_params = JSON.parse(user_response.body)
         
@@ -78,20 +81,27 @@ class Api::V1::UsersController < ApplicationController
         country = user_params["country"] ? user_params["country"] : nil
 
         #Update the user if they have image or country
-        @user.update(image: image, country: country)
+        @user.update({image: image, country: country})
 
-        #Update the user access/refresh_tokens
-        if @user.access_token_expired?
-        @user.refresh_access_token
+        #Update the user access/refresh_token
+        if @user 
+            @user.access_token = auth_params["access_token"]
+                if @user.access_token_expired?
+                @user.refresh_access_token
+                else
+                @user.update(
+                    access_token: auth_params["access_token"], 
+                    refresh_token: auth_params["refresh_token"]
+                )
+            end
+            #Redirect to Front End app homepage checked
+            render json: @user
         else
-        @user.update(
-            access_token: auth_params["access_token"], 
-            refresh_token: auth_params["refresh_token"]
-        )
+            render json: {error: "invalid stuff"}
         end
+    
 
-        #Redirect to Front End app homepage
-        redirect_to "http://localhost:8888/"
+
     end    
 
     private
