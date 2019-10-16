@@ -10,10 +10,52 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_10_172645) do
+ActiveRecord::Schema.define(version: 2019_10_15_180724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "follows", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "followee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["followee_id"], name: "index_follows_on_followee_id"
+    t.index ["user_id"], name: "index_follows_on_user_id"
+  end
+
+  create_table "playlist_songs", force: :cascade do |t|
+    t.bigint "song_id"
+    t.bigint "playlist_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["playlist_id"], name: "index_playlist_songs_on_playlist_id"
+    t.index ["song_id"], name: "index_playlist_songs_on_song_id"
+  end
+
+  create_table "playlists", force: :cascade do |t|
+    t.string "title"
+    t.string "owner"
+    t.string "image"
+    t.text "description"
+    t.boolean "collaborative"
+    t.boolean "public"
+    t.integer "followers"
+    t.integer "length"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_playlists_on_user_id"
+  end
+
+  create_table "songs", force: :cascade do |t|
+    t.string "title"
+    t.string "artist"
+    t.string "album"
+    t.string "album_img"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -29,4 +71,6 @@ ActiveRecord::Schema.define(version: 2019_10_10_172645) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "follows", "users"
+  add_foreign_key "follows", "users", column: "followee_id"
 end

@@ -6,8 +6,8 @@ class Api::V1::UsersController < ApplicationController
         # Now you can access user's private data, create playlists and much more
 
         # Access private data
-        spotify_user.country #=> "US"
-        spotify_user.email   #=> "example@email.com"
+        spotify_user.country 
+        spotify_user.email  
 
         # Create playlist in user's Spotify account
         playlist = spotify_user.create_playlist!('my-awesome-playlist')
@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApplicationController
         # Add tracks to a playlist in user's Spotify account
         tracks = RSpotify::Track.search('Know')
         playlist.add_tracks!(tracks)
-        playlist.tracks.first.name #=> "Somebody That I Used To Know"
+        playlist.tracks.first.name 
 
         # Access and modify user's music library
         spotify_user.save_tracks!(tracks)
@@ -46,6 +46,10 @@ class Api::V1::UsersController < ApplicationController
 
     def show
         @user = User.find_by(id: params[:id])
+    end
+
+    def new
+        @user = User.new
     end
 
     def create
@@ -102,7 +106,22 @@ class Api::V1::UsersController < ApplicationController
     
 
 
-    end    
+
+    end   
+    
+    def edit
+        @user = User.find_by(id: params[:id])
+    end
+
+    def update
+        @user = User.find_by(id: params[:id])
+        @user.update
+    end
+
+    def destroy
+        @user = User.find_by(id: params[:id])
+        @user.destroy
+    end
 
     private
 
