@@ -50,7 +50,6 @@ class Api::V1::SongController < ApplicationController
                     refresh_token: auth_params["refresh_token"]
                 )
             end
-            #Redirect to Front End app homepage checked
             render json: @song
         else
             render json: {error: "invalid stuff"}
