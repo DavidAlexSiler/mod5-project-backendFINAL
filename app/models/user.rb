@@ -29,4 +29,10 @@ class User < ApplicationRecord
         puts "Current Token Has Not Expired"
         end
     end
+
+    def not_following
+        @following = self.followees
+        @users = User.all
+        @not_following = @users - @following
+    end
 end

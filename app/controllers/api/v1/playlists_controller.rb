@@ -1,4 +1,4 @@
-class Api::V1::PlaylistController < ApplicationController
+class Api::V1::PlaylistsController < ApplicationController
     def index
         @playlists = Playlist.all
         render json: @playlist
