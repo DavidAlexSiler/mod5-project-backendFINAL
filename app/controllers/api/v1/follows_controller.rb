@@ -17,7 +17,7 @@ class Api::V1::FollowsController < ApplicationController
     end
 
     def edit
-        @follow = Foloow.find_by(id: params[:id])
+        @follow = Follow.find_by(id: params[:id])
     end
 
     def update
