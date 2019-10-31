@@ -35,9 +35,9 @@ class Api::V1::SongsController < ApplicationController
         
         #Create Song 
         @song = Song.find_or_create_by(
-            title:  song_params["name"]
-            artist: song_params["artist"]
-            album: song_params["album"]
+            title:  song_params["name"],
+            artist: song_params["artist"],
+            album: song_params["album"],
             album_img: song_params["images"][0]
         )
         if @song 
