@@ -8,7 +8,7 @@ class Api::V1::AuthController < ApplicationController
             client_id: Rails.application.credentials[:spotify][:client_id],
             response_type: 'code',
             # redirect_uri: 'http://localhost:8888/callback',
-            redirect_uri: 'http://localhost:8888/callback',
+            redirect_uri: 'https://current-input-front.herokuapp.com/callback',
             scope: "
             playlist-modify-public
             playlist-modify-private 
