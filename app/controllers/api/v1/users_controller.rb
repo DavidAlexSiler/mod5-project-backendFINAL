@@ -23,7 +23,8 @@ class Api::V1::UsersController < ApplicationController
         body = {
             grant_type: "authorization_code",
             code: params[:code],
-            redirect_uri: 'http://localhost:8888/callback',
+            # redirect_uri: 'http://localhost:8888/callback',
+            redirect_uri: 'https://current-input-front.herokuapp.com/callback',
             client_id: Rails.application.credentials[:spotify][:client_id],
             client_secret: Rails.application.credentials[:spotify][:client_secret]
         }
